@@ -7,7 +7,7 @@ class ParkedCar {
     string make;
     string model;
     string color;
-    string licenceNum;
+    string licenseNum;
     double timeElapsed;
 
 public:
@@ -17,7 +17,7 @@ public:
         make = mk;
         model = md;
         color = c;
-        licenceNum = l;
+        licenseNum = l;
         timeElapsed = te;
     }
 
@@ -32,7 +32,7 @@ public:
         cout << "Make:              " << make << endl;
         cout << "Model:             " << model << endl;
         cout << "Color:             " << color << endl;
-        cout << "Licence Number:    " << licenceNum << endl;
+        cout << "License Number:    " << licenseNum << endl;
         cout << "Hours Elapsed:     " << timeElapsed << endl << endl;
     }
 };
@@ -75,7 +75,7 @@ public:
             }
         }
 
-        cout << "The fine is $" << fineOwed << endl << endl;
+        cout << "The fine is:       $ " << fineOwed << endl << endl;
     }
 
 };
