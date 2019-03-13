@@ -91,7 +91,7 @@ public:
         int te = car.timePassed ();
 
         if (tp < te) {
-            car.illegalCarInfo (car);
+            //car.illegalCarInfo (car);
         }
 
     }
