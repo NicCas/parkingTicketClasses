@@ -2,80 +2,83 @@
 
 using namespace std;
 
-class ParkedCar;
-class ParkingMeter;
-class ParkingTicket;
-class PoliceOfficer;
-
-
+// This class creates a parked car
 class ParkedCar {
     string make;
     string model;
     string color;
-    int licenceNum;
-    int timeElapsed;
+    string licenceNum;
+    double timeElapsed;
 
 public:
-    ParkedCar (string mk, string md, string c, int l, int te)
+    // Declare Car Object
+    ParkedCar (string mk, string md, string c, string l, double te)
     {
-        string make = mk;
-        string model = md;
-        string color = c;
-        int licenceNum = l;
-        int timeElapsed = te;
+        make = mk;
+        model = md;
+        color = c;
+        licenceNum = l;
+        timeElapsed = te;
     }
 
-    int timePassed () const
+    // Allows timeElapsed to be easily accessed
+    double timePassed () const
     {
         return timeElapsed;
     }
 
-    void printCar () const;
+    // Print out info about car
+    void printCar () const {
+        cout << "Make:              " << make << endl;
+        cout << "Model:             " << model << endl;
+        cout << "Color:             " << color << endl;
+        cout << "Licence Number:    " << licenceNum << endl;
+        cout << "Hours Elapsed:     " << timeElapsed << endl << endl;
+    }
 };
 
-void ParkedCar::printCar() const
-{
-    cout << "Make:              " << make << endl;
-    cout << "Model:             " << model << endl;
-    cout << "Color:             " << color << endl;
-    cout << "Licence Number:    " << licenceNum << endl;
-    cout << "Time Elapsed:      " << timeElapsed << endl << endl;
-}
-
-
+// This class creates a parking meter
 class ParkingMeter {
-
-    int timePurchased;
+    double timePurchased;
 
 public:
-    int timeBought () const {
+    // Declare ParkingMeter Object
+    ParkingMeter (double tp)
+    {
+        timePurchased = tp;
+    }
+
+    // Allows timePurchased to be easily accessed
+    double timeBought () const {
         return timePurchased;
     }
 
 };
 
-
+// This class creates a parking ticket
 class ParkingTicket {
 public:
-    void illegalCarInfo (ParkedCar illegalCar);
-    int fine (string tp, string te)
+    // Determines what the fine amount is
+    void fine (double tp, double te)
     {
+        // For the first hour the fine is $25, so that's the base amount
+        int fineOwed = 25;
+        double timeOver = te - tp;
 
-    }
+        // For every hour past the first there is an additional $10 charge
+        if (timeOver > 1)
+        {
+            // This determines how many hours there are past the first (in other words, [(hours_over - 1) * 10])
+            for (int i = 1; (float)i < timeOver; i++)
+            {
+                fineOwed += 10;
+            }
+        }
 
-    void police (PoliceOfficer Cop)
-    {
-        Cop.printPolice();
+        cout << "The fine is $" << fineOwed << endl << endl;
     }
 
 };
-
-void ParkingTicket::illegalCarInfo (ParkedCar illegalCar)
-{
-    illegalCar.printCar();
-
-}
-
 
 class PoliceOfficer {
     string name;
@@ -83,26 +86,34 @@ class PoliceOfficer {
 
 public:
 
-    void printPolice () const;
-
-    void checkIllegal(ParkingMeter meter, ParkedCar car)
-    {
-        int tp = meter.timeBought ();
-        int te = car.timePassed ();
-
-        if (tp < te) {
-            //car.illegalCarInfo (car);
-        }
-
+    // Declare PoliceOfficer Object
+    PoliceOfficer (string n, int b){
+        name = n;
+        badge = b;
     }
 
-};
+    // Check if a car is illegally parked after the meter is up
+    void checkIllegal(ParkingMeter meter, ParkedCar car)
+    {
+        // Get how much time was payed for and how long the car has been there
+        double tp = meter.timeBought ();
+        double te = car.timePassed ();
 
-void PoliceOfficer::printPolice() const
-{
-    cout << "Officer Name:  " << name << endl;
-    cout << "Badge Number:  " << badge << endl;
-}
+        // If the car has been there longer than payed for, then issue a ticket
+        if (tp < te)
+        {
+            ParkingTicket ticket;
+
+            // Print car info, meter info, what the fine is, and who is issuing the ticket
+            car.printCar();
+            cout << "Hours Purchased:   " << tp << endl << endl;
+            ticket.fine(tp, te);
+            cout << "Officer Name:  " << name << endl;
+            cout << "Badge Number:  " << badge << endl;
+
+        }
+    }
+};
 
 
 int main() {
@@ -137,9 +148,13 @@ int main() {
      * Write a program that demonstrates how these classes collaborate.
      */
 
+    // Declare objects
+    PoliceOfficer policeOfficer = PoliceOfficer ("Jim Lawman", 123456);
+    ParkingMeter parkingMeter = ParkingMeter (2);
+    ParkedCar parkedCar = ParkedCar("Honda", "Accord", "Blue", "1ABC234", 3.5);
 
-
-
+    // Check if car is parked illegally
+    policeOfficer.checkIllegal (parkingMeter, parkedCar);
 
     return 0;
 }
